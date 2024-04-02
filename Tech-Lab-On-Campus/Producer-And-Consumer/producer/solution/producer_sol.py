@@ -1,4 +1,4 @@
-from . import mqProducerInterface
+from producer_interface import mqProducerInterface
 import pika
 import os
 
@@ -20,8 +20,8 @@ class mqProducer(mqProducerInterface):
 
     def setupRMQConnection(self) -> None:
         # Set-up Connection to RabbitMQ service
-        self.con_params = pika.URLParameters(os.environ["AMQP_URL"])
-        self.connection = pika.BlockingConnection(parameters=self.con_params)
+        con_params = pika.URLParameters(os.environ["AMQP_URL"])
+        self.connection = pika.BlockingConnection(parameters=con_params)
 
         # Establish Channel
         self.channel = self.connection.channel()
