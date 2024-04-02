@@ -22,22 +22,22 @@ class mqProducer(mqProducerInterface):
 
     def setupRMQConnection(self) -> None:
         # Set-up Connection to RabbitMQ service
-        con_params = pika.URLParameters(os.environ["AMQP_URL"])
-        connection = pika.BlockingConnection(parameters=con_params)
+        self.con_params = pika.URLParameters(os.environ["AMQP_URL"])
+        self.connection = pika.BlockingConnection(parameters=self.con_params)
 
         # Establish Channel
-        channel = connection.channel()
+        self.channel = self.connection.channel()
 
         # Create the exchange if not already present
-        exchange = channel.exchange_declare(exchange="Exchange Name")
+        self.exchange = self.channel.exchange_declare(exchange="Exchange Name")
 
 
     def publishOrder(self, message: str) -> None:
         # Basic Publish to Exchange
         self.channel.basic_publish(
-            exchange="Exchange Name",
-            routing_key="Routing Key",
-            body="Message",
+            exchange_name = self.exchange_name,
+            routing_key = self.routing_key,
+            body = message,
         )
 
         # Close Channel
